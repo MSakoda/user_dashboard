@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Checkout</title>
+    </head>
+    <body>
+        <a href="{% url 'index' %}">Back</a>
+        <h1>Congratulations on your order!</h1>
+        <p>We charged your credit card ${{request.session.last_bought.total}}</p>
+        <p>You have make {{request.session.count}} orders</p>
+        <p>for a grand total of ${{request.session.total}}</p>
+    </body>
+</html>

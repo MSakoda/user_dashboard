@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Success</title>
+    </head>
+    <body>
+        <h1>Dojo Survey</h1>
+        <p>Name: {{request.session.name}}</p>
+        <p>Location: {{request.session.location}}</p>
+        <p>Language: {{request.session.language}}</p>
+        {% if request.session.comment %}
+        <p>Comment: {{request.session.comment}}</p>
+        {% endif %}
+    </body>
+</html>

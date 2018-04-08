@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>User</title>
+    </head>
+    <body>
+        <h1>User</h1>
+        <p>Full Name: {{user.first_name}} {{user.last_name}}</p>
+        <p>Email: {{user.email}}</p>
+        <p>{{user.created_at}}</p>
+        <a href="{% url 'edit_user' user_id=user.id %}">Edit</a> | <a href="{% url 'destroy_user' user_id=user.id %}">Delete</a> | <a href="{% url 'restful_index' %}">Go Back</a>
+    </body>
+</html>

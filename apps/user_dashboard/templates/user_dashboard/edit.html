@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Edit User</title>
+        <script
+  src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'user_dashboard/css/styles.css' %}">
+    </head>
+    <body>
+        <!--NAV BAR-->
+        <div class="nav-bar">
+            <div class="inline nav-left">
+                <p style='font-size:1.5em;'>User Dashboard</p>
+                <p><a href='{% url "user_dashboard:dashboard" %}'>Dashboard</a></p>
+                <p><a href="#">Profile</a></p>
+            </div>
+            <div class="inline nav-right">
+                <a href='{% url "user_dashboard:log_off" %}'style='line-height:37px;'>Log off</a>
+            </div>
+        </div>
+
+        <div class="container">
+            <h1>Edit Profile</h1>
+
+            <!--MESSAGES-->
+            {% if messages %}
+            {% for message in messages %}
+            <div class="col-xs-12">
+                <center>{{message}}</center>
+            </div>
+            {% endfor %}
+            {% endif %}
+
+            <!-- CONTENT -->
+            <div class="row">
+
+                <!-- EDIT INFO-->
+                <div class="col-md-6">
+                    <h2>Edit Information</h2>
+                    <form class="" action="{% url 'user_dashboard:update_user' %}" method="post" style='padding:0 30px;'>
+                        {% csrf_token %}
+                        <label for="email">Email Address:</label>
+                        <input type="email" class='form-control' name="email" value="{{user.email}}" required>
+                        <label for="first_name">First Name:</label>
+                        <input type="text" class='form-control' name="first_name" value="{{user.first_name}}" required pattern=".{3,}" title='First name must be at least 3 characters in length'>
+                        <label for="last_name">Last Name:</label>
+                        <input type="text" class='form-control' name="last_name" value="{{user.last_name}}" required pattern=".{3,}" title='Last name must be at least 3 characters in length'>
+                        <br>
+                        <input type="submit" class='btn btn-success' value="Save" style='float:right'>
+                    </form>
+                </div>
+
+                <!-- EDIT PASSWORD -->
+                <div class="col-md-6">
+                    <h2>Change Password</h2>
+                    <form action="{% url 'user_dashboard:update_password' %}" method="post" style='padding:0 30px;'>
+                        {% csrf_token %}
+                        <label for="password">Password</label>
+                        <input type="password" name="password" class='form-control' value="" pattern='.{8,0}' required>
+                        <label for="pw_conf">Confirm Password</label>
+                        <input type="password" name="pw_conf" class='form-control' value="" pattern='.{8,0}' required>
+                        <br>
+                        <input type="submit" class='btn btn-success' value="Update password" style='float:right'>
+                    </form>
+                </div>
+
+                <div style='margin-top:20px;' class='col-md-12'>
+                    <h2>Edit Description</h2>
+                    <div class="row">
+                        <form action="{% url 'user_dashboard:update_desc' %}" method="post" class='col-md-12'>
+                            {% csrf_token %}
+                            <label for="desc">Description</label>
+                            <textarea name="desc" style='height:100px;'class='form-control ' >{{user.desc}}</textarea>
+                            <br>
+                            <input type="submit" class='btn btn-success' value="Edit Description" style='float:right;'>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>

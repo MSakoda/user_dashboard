@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Session Words</title>
+    </head>
+    <body>
+        <h1>Add a new word</h1>
+        <form action="/session_words/session_words/process" method="post">
+            {% csrf_token %}
+            <input type="text" name="word" value=""><br>
+            <br>
+            Choose color: <br>
+            <input type="radio" name="color" value="red"> Red <br>
+            <input type="radio" name="color" value="blue"> Blue <br>
+            <input type="radio" name="color" value="green"> Green <br>
+
+            <input type="checkbox" name="large_font"> Big Fonts!
+            <input type="submit" name="" value="Add to Session!">
+        </form>
+
+        {% for word in request.session.words %}
+        <p style='color:{{word.color}}; {% if "large_font" in word%}font-size:30px;font-weight:bold{%endif%}'>{{word.word}}</p>
+        {% endfor %}
+    </body>
+</html>

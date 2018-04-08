@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>New User</title>
+    </head>
+    <body>
+        <h1>New User</h1>
+
+        {% for error in request.session.errors %}
+            <p>{{error}}</p>
+        {% endfor %}
+        <form action="{% url 'new_user' %}" method="post">
+            {% csrf_token %}
+            First Name: <input type="text" name="first_name" value="" required pattern='.{3,}' title='First name must be at least 3 characters in length'> <br>
+            Last Name: <input type="text" name="last_name" value="" required pattern='.{3,}' title='Last name must be at least 3 characters in length'> <br>
+            Email: <input type="email" name="email" value="" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"> <br>
+            <input type="submit" value="Submit">
+        </form>
+
+        <a href="{% url 'restful_index' %}">Go Back</a>
+    </body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Amadon</title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'amadon/css/main.css' %}">
+    </head>
+    <body>
+        <a href="{% url 'user_login' %}">User_Login</a>
+        <h1>Amadon!!!</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Price</th>
+                    <th>Amount</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in request.session.products %}
+                <tr>
+                    <td>{{product.name}}</td>
+                    <td>${{product.price}}</td>
+                    <form action="{% url 'buy' number=product.id%}" method="post">
+                        {% csrf_token %}
+                        <td>
+                            <input style='width:30px;' type="number" name="amount" value="1" min='0' max='10'>
+                        </td>
+                        <td><input type='submit' value='Buy'></input></td>
+                    </form>
+                </tr>
+
+                {% endfor %}
+            </tbody>
+        </table>
+    </body>
+</html>

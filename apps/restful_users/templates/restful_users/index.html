@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Restful Users</title>
+        {% load static %}
+    </head>
+    <body>
+        <h1>Restful Users</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Full Name</th>
+                    <th>Email</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{user.first_name}} {{user.last_name}}</td>
+                    <td>{{user.email}}</td>
+                    <td><a href='{% url "show_user" user_id=user.id %}'>Show</a> <a href="{% url 'edit_user' user_id=user.id %}">Edit</a></td>
+                    <td><a href="/restful_users/users/{{user.id}}/destroy">Delete</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{% url 'new_user' %}">New User</a>
+    </body>
+</html>
