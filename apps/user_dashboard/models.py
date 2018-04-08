@@ -46,10 +46,14 @@ class UserManager(models.Manager):
 
     def get_user_by_email(self, email):
         user = User.objects.filter(email__iexact=email)
+        print "in get user by email"
+        print user
+        print "lenght of user:"
+        print len(user)
         if len(user) < 1:
-            return "User not in database"
+            return False
         else:
-            return user
+            return True
 
 class User(models.Model):
     first_name = models.CharField(max_length = 255)
