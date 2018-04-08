@@ -30,6 +30,7 @@ def signin(request):
             messages.error(request, "User is not in database")
             return redirect(reverse('user_dashboard:sign_in'))
         else:
+            user = User.objects.filter(email__iexact=request.POST['email'])
             hash_pw = user[0].hash_pw
             password = request.POST['password']
             if bcrypt.checkpw(password.encode(), hash_pw.encode()):
