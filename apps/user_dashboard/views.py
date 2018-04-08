@@ -24,8 +24,10 @@ def signin(request):
         print request.POST['email']
         print request.POST['password']
         user = User.objects.get_user_by_email(request.POST['email'])
-        if type(user) is str:
-            print "error:" + user
+        print "user after get:"
+        print user
+        if user == False:
+            messages.error(request, "User is not in database")
             return redirect(reverse('user_dashboard:sign_in'))
         else:
             hash_pw = user[0].hash_pw
@@ -44,7 +46,6 @@ def signin(request):
 def log_off(request):
     for key in request.session.keys():
         del request.session[key]
-    # request.session.pop('logged_in')
     return redirect(reverse('user_dashboard:sign_in'))
 
 
