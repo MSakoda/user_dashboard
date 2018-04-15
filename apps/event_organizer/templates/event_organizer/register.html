@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Event Organizer: Register</title>
+        <script
+  src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'event_organizer/css/styles.css' %}">
+    </head>
+    <body>
+
+        <!--NAV BAR-->
+        <div class="nav-bar">
+            <div class="inline nav-left">
+                <p style='font-size:1.5em;'>Event Organizer</p>
+                <p style='margin-left: 10px;line-height:37px;vertical-align:top;'>
+                    <a href='{% url "events:index" %}'>Home</a>
+                </p>
+            </div>
+            <div class="inline nav-right">
+                <a href='{% url "events:signin" %}' style='line-height:37px;'>Sign in</a>
+            </div>
+        </div>
+
+        <div class="container">
+            <h1>Register</h1>
+            {% if messages %}
+            {% for message in messages %}
+            <div class="col-xs-12">
+                <center class='alert alert-{% if message.tags == "success" %}success{% else %}danger{% endif %}'>{{message}}</center>
+            </div>
+            {% endfor %}
+            {% endif %}
+
+            <form  action="{% url 'events:register' %}" method="post">
+                {% csrf_token %}
+                <label for="email">Email Address:</label>
+                <input type="email" class='form-control col-md-5' name="email" value="" placeholder='Email' required><br>
+                <label for="first_name">First Name:</label>
+                <input type="text" class='form-control col-md-5' name="first_name" value="" placeholder='First Name' required pattern='.{3,}' title='First name must be at least 3 characters in length'><br>
+                <label for="last_name">Last Name:</label>
+                <input type="text" class='form-control col-md-5' name="last_name" value="" placeholder='Last Name' required pattern='.{3,}' title='Last name must be at least 3 characters in length'><br>
+                <label for="password">Password:</label>
+                <input type="password" class='form-control col-md-5' name="password" value="" placeholder='Password' required pattern='.{8,}' title='Password must be at least 8 characters in length'><br>
+                <label for="pw_conf">Password Confirm:</label>
+                <input type="password" class='form-control col-md-5' name="pw_conf" value="" placeholder='Password Confirm' required pattern='.{8,}' title='Passwords must match'><br>
+                <input type="submit" class='btn btn-success' value="Register">
+            </form>
+            <br>
+            <a href="{% url 'events:signin' %}">Already have an account? Login</a>
+        </div>
+    </body>
+</html>

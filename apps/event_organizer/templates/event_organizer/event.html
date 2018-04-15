@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Event Organizer: Event</title>
+        <script
+  src="https://code.jquery.com/jquery-3.3.1.js"
+  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+  crossorigin="anonymous"></script>
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.22.0/moment.js"></script>
+        {% load static %}
+        {% load time_extras %}
+        <script type="text/javascript" src='{% static "event_organizer/js/event.js" %}'>
+
+        </script>
+        <link rel="stylesheet" href="{% static 'event_organizer/css/styles.css' %}">
+    </head>
+    <body>
+
+        <!--NAV BAR-->
+        <div class="nav-bar">
+            <div class="inline nav-left">
+                <p style='font-size:1.5em;'>Event Organizer</p>
+                <p style='margin-left: 10px;line-height:37px;vertical-align:top;'>Home</p>
+                <a href="{% url 'events:profile' %}" style='margin-left: 10px;line-height:37px;vertical-align:top;'>Profile</p>
+            </div>
+            <div class="inline nav-right">
+                <a style='line-height:37px;' href='{% url "events:signout" %}'>Sign Out</a>
+            </div>
+        </div>
+
+        <div class="container" style='padding-bottom:50px;'>
+            <div style='display:inline-block;width:25%'>
+                <h1>Event</h1>
+            </div><div style='display:inline-block;text-align:right;width:75%'>
+                <a class='btn btn-success text-white'>Edit Event</a>
+                <a href="{% url 'events:dashboard' %}"><button class='btn btn-primary'>Back to Dashboard</button></a>
+            </div>
+
+            <!--MESSAGES-->
+            {% if messages %}
+            {% for message in messages %}
+            <div class="col-xs-12">
+                <center class='alert alert-{% if message.tags == "success" %}success{% else %}danger{% endif %}'>{{message}}</center>
+            </div>
+            {% endfor %}
+            {% endif %}
+
+            <div class="container">
+
+
+                <!-- EVENT INFO -->
+                <div id='eventInfo'>
+
+                    <h5><u>Event Info</u></h5>
+                    <p>Date: {{event.date | date:'F j, o'}}</p>
+                    <p>Start time: {{event.start_time | hour_test}}</p>
+                    <p>End time: {{event.end_time | hour_test}}</p>
+                    <p>Duration: {{event.start_time | hour_diff:event.end_time}}</p>
+                    <p>Number of guests: {{event.number_of_guests}}</p>
+                    <p>Number of artists: {{event.number_of_artists}}</p>
+                    <p>Event Description: {{event.desc}}</p>
+
+                    <p>Indoor or Outdoor:
+                    {% if event.indoor %}
+                        Indoors
+                    {% else %}
+                        Outdoors
+                    {% endif %}
+                    </p>
+
+                    <p>Traditional or Digital:
+                    {% if event.digital %}
+                        Digital
+                    {% else %}
+                        Traditional
+                    {% endif %}
+                    </p>
+
+                    <h5><u>Event Address</u></h5>
+
+                    <p>{{event.address.street}} {{event.address.street2}}, {{event.address.city}} {{event.address.state}}, {{event.address.zipcode}}</p>
+                    <h5><u>Client Info</u></h5>
+                    <p>Name: {{event.contact.full_name}}</p>
+                    <p>Phone: {{event.contact.phone}}</p>
+                    <p>Email: {{event.contact.email}}</p>
+                </div>
+
+
+
+                <!-- FORM -->
+                <div id='form' hidden>
+                    <form action="{% url 'events:create_event' %}" method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>Event Info</h5>
+
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <label for="date">Date of Event</label>
+                                        <input type="date" class='form-control' name="date" value="" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <center><label for="num_guests">Number of Guests</label>
+                                        <input type="number" class='form-control col-md-6' name="num_guests" value="1" min=1 required></center>
+                                    </div>
+                                    <!-- <div class="col-md-4">
+                                        <label for="Number of artists">Number of artists</label>
+                                        <input type="number" class='form-control' name="number_of_artists" value='1'>
+                                    </div> -->
+                                </div>
+
+                                <div class="row" style='margin-top:10px;'>
+                                    <div class="col-md-4">
+                                        <label for="Start Time">Start Time</label>
+                                        <input type="time" class='form-control' name="start_time" value="19:00:00" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label for="End Time">End Time</label>
+                                        <input type="time" class='form-control' name="end_time" value="23:00:00" required>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <center><label for="Number of artists">Number of artists</label>
+                                        <input type="number" class='form-control col-md-6' name="number_of_artists" value='1' min=1 required></center>
+                                    </div>
+
+                                    <div class="col-md-12" style='margin-top:10px;'>
+
+                                        <label for="Description">Event Description/Additional Info</label>
+                                        <textarea name="desc" class='form-control' placeholder='Briefly describe the event: Wedding, Corportate, Birthday, etc...' required></textarea>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="btn-group btn-group-toggle" style='margin:15px 0px;' data-toggle="buttons">
+                                                    <label class="btn btn-secondary">
+                                                        <input type="radio" name="indoor_outdoor" id="option1" value='indoor' autocomplete="off" required> Indoor
+                                                    </label>
+                                                    <label class="btn btn-secondary">
+                                                        <input type="radio" name="indoor_outdoor" value='indoor' id="option2" autocomplete="off" required> Outdoor
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+
+                                                <div class="btn-group btn-group-toggle" style='margin:15px 0px;' data-toggle="buttons">
+                                                    <label class="btn btn-secondary">
+                                                        <input class='form-control'type="radio" name="digital_traditional" id="option1" value='digital' autocomplete="off" required> Digital
+                                                    </label>
+                                                    <label class="btn btn-secondary">
+                                                        <input type="radio" name="digital_traditional" value='traditional' id="option2" autocomplete="off" required> Traditional
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+
+                                        <label for="border info">Custom Border</label>
+                                        <textarea name="custom_border" class='form-control' placeholder='Describe what you would like on the border' required></textarea>
+
+                                        <label for="parking info">Parking Info</label>
+                                        <textarea name="parking_info" class='form-control' placeholder='Any parking information that we should know' required></textarea>
+
+                                    </div>
+                                </div>
+
+                                <h5 style='margin-top:10px;'>Contact info</h5>
+
+
+                                <!--
+                                NUMBER OF GUESTS
+                                DRAWING TYPE : TRADITIONAL OR DIGITAL
+                                SPECIAL REQUESTS
+                                INDOOR OUTDOOR?
+                                -->
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="Contact Name">Full Name</label>
+                                        <input type="text" class='form-control' name="contact_name" placeholder='John Smith' required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="Contact position">Company</label>
+                                        <input type="text" class='form-control' name="company" placeholder='' >
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="Contact phone">Phone</label>
+                                        <input type="text" class='form-control' name="contact_phone" placeholder='555-555-5555' required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="Contact email">Email</label>
+                                        <input type="email" class='form-control' name="contact_email" placeholder='John@smith.com' required>
+                                    </div>
+                                </div>
+
+
+
+
+                            </div>
+                            <div class="col-md-6">
+                                <h5>Event Address</h5>
+                                <div id='addressForm'>
+                                    <label for="street1">Street Address</label>
+                                    <input type="text" name="street" class='form-control' placeholder='123 easy st.' required>
+
+                                    <div class="row">
+                                        <div class="col-md-6 " style='vertical-align:bottom'>
+                                            <label>Address line 2</label>
+                                            <input type="text" name="street2" class='form-control' placeholder='apt. #123'>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="city">City</label>
+                                            <input type="text" name="city" class='form-control' placeholder='Simpletown' required>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <label for="state">State</label>
+                                            <select name='state' class='form-control' required>
+                                                <option value=''>--Select State--</option>
+                                                {{states}}
+                                                {{address}}
+                                                {% for state in states %}
+                                                {% if address.state == state %}
+                                                <option value="{{state}}" selected>{{state}}</option>
+                                                {% else %}
+                                                <option value="{{state}}">{{state}}</option>
+                                                {% endif %}
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label for="zipcode">Zipcode</label>
+                                            <input type="text" name="zipcode" class='form-control' placeholder='12345' required>
+                                        </div>
+                                    </div>
+
+                                    <div style='margin-top:50px;'>
+                                        <input type="submit" class='btn btn-success form-control' name="" value="Create Event">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <br>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>

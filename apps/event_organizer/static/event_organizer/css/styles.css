@@ -1,0 +1,51 @@
+* {
+    padding: 0px;
+    margin:0px;
+}
+
+.nav-bar {
+    border-bottom:1px solid black;
+    vertical-align: top;
+    margin-bottom:25px;
+}
+
+.inline {
+    display:inline-block;
+}
+
+.inline p {
+    display:inline-block;
+    margin-left:10px;
+    line-height:37px;
+    vertical-align: top;
+    text-decoration: none;
+    cursor:pointer;
+}
+
+.inline a {
+    color:black;
+}
+
+.nav-left {
+    margin-left:20px;
+}
+
+.nav-left p {
+    margin:0px;
+    padding:0px;
+}
+
+.nav-right {
+    float:right;
+    margin-right: 20px;
+}
+
+center {
+    transition:300ms;
+}
+
+center:hover {
+    transition:300ms;
+    opacity:.8;
+    border:1px solid 'rbga(255,0,255,.5)';
+}

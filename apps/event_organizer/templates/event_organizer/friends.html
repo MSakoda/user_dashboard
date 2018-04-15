@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Event Organizer: Friends</title>
+    </head>
+    <script
+src="https://code.jquery.com/jquery-3.3.1.js"
+integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+crossorigin="anonymous"></script>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    {% load static %}
+    {% load time_extras %}
+    <link rel="stylesheet" href="{% static 'event_organizer/css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'event_organizer/css/friends.css' %}">
+    <script type="text/javascript" src='{% static "event_organizer/js/utils.js" %}'></script>
+    <script type="text/javascript" src='{% static "event_organizer/js/friends.js" %}'></script>
+
+    <body>
+
+
+                <!--NAV BAR-->
+                <div class="nav-bar">
+                    <div class="inline nav-left">
+                        <p style='font-size:1.5em;'>Event Organizer</p>
+                        <a href='{% url "events:dashboard" %}' style='margin-left: 10px;line-height:37px;vertical-align:top;'>Dashboard</a>
+                        <a href="{% url 'events:profile' %}" style='margin-left: 10px;line-height:37px;vertical-align:top;'>Profile</p>
+                    </div>
+                    <div class="inline nav-right">
+                        <a style='line-height:37px;' href='{% url "events:signout" %}'>Sign Out</a>
+                    </div>
+                </div>
+
+                <div class="container">
+                    <h1>Friends</h1>
+                    <!--MESSAGES-->
+                    {% if messages %}
+                    {% for message in messages %}
+                    <div class="col-xs-12">
+                        <center class='alert alert-{% if message.tags == "success" %}success{% else %}danger{% endif %}'>{{message}}</center>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+
+                    <div id='flashMessage'></div>
+
+                    <p>Search by:
+                    First Name <input type="radio" name="friend_search_type" value="first_name"> |
+                    Last Name <input type="radio" name="friend_search_type" value="last_name"> |
+                    Email <input type="radio" name="friend_search_type" value="email">
+                    </p>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <input type="text" class='form-control' name="friend_search" value="" placeholder="Friend's First Name">
+                        </div>
+                        <input class='btn btn-primary' type="submit" name="" value="Find Friend">
+                    </div>
+                </div>
+
+    </body>
+</html>

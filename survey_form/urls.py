@@ -23,4 +23,5 @@ urlpatterns = [
     url(r'^user_login', include('apps.user_login.urls')),
     url(r'^user_dashboard', include('apps.user_dashboard.urls', namespace='user_dashboard')),
     url(r'^restful_users', include('apps.restful_users.urls')),
+    url(r'^event_organizer', include('apps.event_organizer.urls', namespace="events")),
 ]
